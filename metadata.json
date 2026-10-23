@@ -1,0 +1,6 @@
+{
+  "name": "StoryNest",
+  "description": "Modern African serial fiction platform featuring mobile-first reading customization, Paystack creator monetization, and offline support.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

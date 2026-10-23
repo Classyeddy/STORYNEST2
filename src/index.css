@@ -1,0 +1,33 @@
+@import "tailwindcss";
+
+@font-face {
+  font-family: 'NairaFont';
+  src: url('/fonts/naira.ttf') format('truetype');
+  font-style: normal;
+  font-display: swap;
+}
+
+@theme {
+  --font-sans: 'NairaFont', 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-serif: 'NairaFont', 'Merriweather', Georgia, serif;
+  --font-mono: 'NairaFont', 'JetBrains Mono', Menlo, monospace;
+}
+
+@layer base {
+  * {
+    -webkit-tap-highlight-color: transparent;
+  }
+}
+
+html, body, button, input, textarea, select, .font-sans, [class*="font-sans"] {
+  font-family: 'NairaFont', 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+}
+
+/* Hide scrollbar for category pills while allowing horizontal scroll */
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-none {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}

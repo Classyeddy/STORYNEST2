@@ -1,0 +1,217 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "Public profile and reader/writer capabilities for a StoryNest user",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Firebase Auth UID" },
+        "email": { "type": "string", "format": "email", "description": "User email address" },
+        "username": { "type": "string", "maxLength": 30, "minLength": 3, "description": "Unique handle" },
+        "displayName": { "type": "string", "maxLength": 50, "minLength": 2, "description": "Public author/reader name" },
+        "avatarUrl": { "type": "string", "description": "Profile picture URL" },
+        "bio": { "type": "string", "maxLength": 300, "description": "Short author bio" },
+        "roles": { "type": "array", "description": "Roles: reader, writer, admin" },
+        "isVerifiedWriter": { "type": "boolean", "description": "Whether the author is verified" },
+        "followingIds": { "type": "array", "description": "List of followed author IDs" },
+        "libraryStoryIds": { "type": "array", "description": "List of saved story IDs" },
+        "walletBalanceNGN": { "type": "number", "description": "Current wallet balance in Nigerian Naira" },
+        "createdAt": { "type": "number", "description": "Account creation timestamp" },
+        "updatedAt": { "type": "number", "description": "Last update timestamp" }
+      },
+      "required": ["id", "email", "username", "displayName", "roles", "walletBalanceNGN", "createdAt"]
+    },
+    "Story": {
+      "title": "Story",
+      "description": "Serialized African fiction published on StoryNest",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Story unique document ID" },
+        "authorId": { "type": "string", "description": "UID of author" },
+        "authorName": { "type": "string", "description": "Author display name" },
+        "authorAvatar": { "type": "string", "description": "Author avatar URL" },
+        "title": { "type": "string", "maxLength": 100, "minLength": 2, "description": "Story title" },
+        "tagline": { "type": "string", "maxLength": 160, "description": "Catchy logline" },
+        "synopsis": { "type": "string", "maxLength": 2000, "description": "Full book synopsis" },
+        "coverImage": { "type": "string", "description": "Cover image URL" },
+        "genres": { "type": "array", "description": "List of primary genres" },
+        "tags": { "type": "array", "description": "Custom hashtags and themes" },
+        "status": { "type": "string", "enum": ["ongoing", "completed", "hiatus", "draft"], "description": "Publication state" },
+        "contentWarnings": { "type": "array", "description": "Content warnings e.g. violence, strong_language" },
+        "totalWords": { "type": "number", "description": "Cumulative word count" },
+        "chapterCount": { "type": "number", "description": "Published chapter count" },
+        "viewsCount": { "type": "number", "description": "Total chapter read impressions" },
+        "ratingAverage": { "type": "number", "description": "Average review score" },
+        "ratingCount": { "type": "number", "description": "Total count of reviews" },
+        "isFeatured": { "type": "boolean", "description": "Featured on home banner" },
+        "isTrending": { "type": "boolean", "description": "Trending on the platform" },
+        "isNewAndUnderrated": { "type": "boolean", "description": "Spotlight for emerging authors" },
+        "createdAt": { "type": "number", "description": "Creation timestamp" },
+        "updatedAt": { "type": "number", "description": "Last modification timestamp" }
+      },
+      "required": ["id", "authorId", "authorName", "title", "synopsis", "coverImage", "genres", "status"]
+    },
+    "Chapter": {
+      "title": "Chapter",
+      "description": "A single chapter in a serialized StoryNest story",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Chapter unique document ID" },
+        "storyId": { "type": "string", "description": "Parent story document ID" },
+        "authorId": { "type": "string", "description": "UID of author" },
+        "chapterNumber": { "type": "number", "description": "Chapter sequence index" },
+        "title": { "type": "string", "maxLength": 100, "minLength": 1, "description": "Chapter title" },
+        "excerpt": { "type": "string", "maxLength": 300, "description": "Preview teaser snippet" },
+        "content": { "type": "string", "description": "Full chapter story text (locked for premium)" },
+        "wordCount": { "type": "number", "description": "Word count of the chapter" },
+        "isPremium": { "type": "boolean", "description": "Whether chapter requires NGN payment" },
+        "priceNGN": { "type": "number", "description": "Price in Nigerian Naira" },
+        "isDraft": { "type": "boolean", "description": "Whether chapter is an unpublished draft" },
+        "publishedAt": { "type": "number", "description": "Publication timestamp" },
+        "updatedAt": { "type": "number", "description": "Last update timestamp" }
+      },
+      "required": ["id", "storyId", "authorId", "chapterNumber", "title", "wordCount", "isPremium", "priceNGN", "isDraft"]
+    },
+    "ReadingProgress": {
+      "title": "ReadingProgress",
+      "description": "Tracks a reader's exact scroll and chapter progression in a story",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Composite key: userId_storyId" },
+        "userId": { "type": "string", "description": "Reader UID" },
+        "storyId": { "type": "string", "description": "Story ID" },
+        "lastChapterId": { "type": "string", "description": "Last read chapter ID" },
+        "lastChapterNumber": { "type": "number", "description": "Last chapter index" },
+        "scrollPercentage": { "type": "number", "description": "Scroll position percent 0-100" },
+        "updatedAt": { "type": "number", "description": "Last reading timestamp" }
+      },
+      "required": ["id", "userId", "storyId", "lastChapterId", "lastChapterNumber", "scrollPercentage"]
+    },
+    "Review": {
+      "title": "Review",
+      "description": "Reader star rating and feedback on a story",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Review unique ID" },
+        "storyId": { "type": "string", "description": "Target story ID" },
+        "authorId": { "type": "string", "description": "Story author UID (cannot review own story)" },
+        "userId": { "type": "string", "description": "Reviewer UID" },
+        "userName": { "type": "string", "description": "Reviewer display name" },
+        "userAvatar": { "type": "string", "description": "Reviewer avatar URL" },
+        "rating": { "type": "number", "description": "Rating score 1 to 5" },
+        "content": { "type": "string", "maxLength": 1000, "minLength": 2, "description": "Review text" },
+        "helpfulCount": { "type": "number", "description": "Upvotes count" },
+        "helpfulUserIds": { "type": "array", "description": "Readers who found this helpful" },
+        "authorReply": { "type": "string", "description": "Optional response from story author" },
+        "createdAt": { "type": "number", "description": "Creation timestamp" }
+      },
+      "required": ["id", "storyId", "userId", "rating", "content", "createdAt"]
+    },
+    "Entitlement": {
+      "title": "Entitlement",
+      "description": "Proof of unlocked access to a premium chapter",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Composite key: userId_chapterId" },
+        "userId": { "type": "string", "description": "Reader UID" },
+        "storyId": { "type": "string", "description": "Parent story ID" },
+        "chapterId": { "type": "string", "description": "Unlocked chapter ID" },
+        "type": { "type": "string", "enum": ["chapter_unlock", "writer_subscription"] },
+        "createdAt": { "type": "number", "description": "Unlock timestamp" },
+        "expiresAt": { "type": "number", "description": "Expiry timestamp, null for perpetual" }
+      },
+      "required": ["id", "userId", "chapterId", "type", "createdAt"]
+    },
+    "Transaction": {
+      "title": "Transaction",
+      "description": "Financial ledger record for chapter unlock or wallet credit",
+      "type": "object",
+      "properties": {
+        "reference": { "type": "string", "description": "Unique Paystack or internal transaction ref" },
+        "userId": { "type": "string", "description": "Payer UID" },
+        "authorId": { "type": "string", "description": "Author UID" },
+        "grossAmount": { "type": "number", "description": "Total amount in NGN" },
+        "platformFee": { "type": "number", "description": "15% platform commission" },
+        "authorNet": { "type": "number", "description": "85% net to author" },
+        "currency": { "type": "string", "enum": ["NGN"] },
+        "status": { "type": "string", "enum": ["success", "pending", "failed"] },
+        "type": { "type": "string", "enum": ["chapter_unlock", "wallet_topup", "withdrawal"] },
+        "processedAt": { "type": "number", "description": "Processed timestamp" }
+      },
+      "required": ["reference", "userId", "grossAmount", "platformFee", "authorNet", "currency", "status", "type"]
+    },
+    "Withdrawal": {
+      "title": "Withdrawal",
+      "description": "Author earnings withdrawal request record",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Withdrawal request ID" },
+        "userId": { "type": "string", "description": "Author UID" },
+        "amountNGN": { "type": "number", "description": "Requested withdrawal amount" },
+        "bankName": { "type": "string", "description": "Nigerian Bank" },
+        "accountNumber": { "type": "string", "description": "NUBAN 10-digit account" },
+        "accountName": { "type": "string", "description": "Verified Account Name" },
+        "status": { "type": "string", "enum": ["pending", "processed", "rejected"] },
+        "requestedAt": { "type": "number", "description": "Request timestamp" }
+      },
+      "required": ["id", "userId", "amountNGN", "bankName", "accountNumber", "accountName", "status", "requestedAt"]
+    },
+    "Report": {
+      "title": "Report",
+      "description": "Content moderation or copyright complaint report",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Report ID" },
+        "reporterId": { "type": "string", "description": "Reporting user UID" },
+        "storyId": { "type": "string", "description": "Reported story ID" },
+        "reason": { "type": "string", "description": "Reason for report" },
+        "details": { "type": "string", "description": "Detailed explanation" },
+        "status": { "type": "string", "enum": ["pending", "investigating", "resolved", "dismissed"] },
+        "createdAt": { "type": "number", "description": "Report timestamp" }
+      },
+      "required": ["id", "reporterId", "storyId", "reason", "status", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "UserProfile",
+      "description": "User profiles with read-only wallet and role safeguards"
+    },
+    "/stories/{storyId}": {
+      "schema": "Story",
+      "description": "Published and draft stories"
+    },
+    "/chapters/{chapterId}": {
+      "schema": "Chapter",
+      "description": "Chapters with drafts restricted to author and free chapters readable by all"
+    },
+    "/readingProgress/{progressId}": {
+      "schema": "ReadingProgress",
+      "description": "User reading progress bookmarks"
+    },
+    "/reviews/{reviewId}": {
+      "schema": "Review",
+      "description": "Reader ratings and reviews"
+    },
+    "/entitlements/{entitlementId}": {
+      "schema": "Entitlement",
+      "description": "Verified reading entitlements for premium chapters"
+    },
+    "/transactions/{transactionId}": {
+      "schema": "Transaction",
+      "description": "Financial ledger transactions (server write only)"
+    },
+    "/withdrawals/{withdrawalId}": {
+      "schema": "Withdrawal",
+      "description": "Author payout withdrawal requests"
+    },
+    "/reports/{reportId}": {
+      "schema": "Report",
+      "description": "Community moderation and copyright reports"
+    },
+    "/admins/{adminId}": {
+      "schema": { "$ref": "#/entities/UserProfile" },
+      "description": "Admin privileges document store for secure RBAC"
+    }
+  }
+}

@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FDE68A" />
+      <stop offset="40%" stop-color="#F59E0B" />
+      <stop offset="100%" stop-color="#D97706" />
+    </linearGradient>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1E2026" />
+      <stop offset="100%" stop-color="#101114" />
+    </linearGradient>
+  </defs>
+  <!-- Background with squircle safe zone -->
+  <rect width="512" height="512" rx="108" fill="url(#bgGrad)" />
+  <rect x="16" y="16" width="480" height="480" rx="96" fill="none" stroke="#F59E0B" stroke-opacity="0.25" stroke-width="4" />
+  
+  <!-- Stylized African StoryNest Book & Sunburst -->
+  <g transform="translate(96, 96)">
+    <!-- Radiant crest arc -->
+    <path d="M 40 180 A 120 120 0 0 1 280 180" fill="none" stroke="url(#goldGrad)" stroke-width="6" stroke-dasharray="12 10" opacity="0.6" />
+    
+    <!-- Open Book Pages -->
+    <path d="M 160 250 C 110 210, 40 220, 10 240 L 10 120 C 50 100, 120 90, 160 125 Z" fill="#2A2D35" stroke="url(#goldGrad)" stroke-width="5" />
+    <path d="M 160 250 C 210 210, 280 220, 310 240 L 310 120 C 270 100, 200 90, 160 125 Z" fill="#20232B" stroke="url(#goldGrad)" stroke-width="5" />
+    
+    <!-- Central Rising Flame / Quill -->
+    <path d="M 160 40 C 175 90, 190 140, 160 210 C 130 140, 145 90, 160 40 Z" fill="url(#goldGrad)" />
+    
+    <!-- Spine Line -->
+    <line x1="160" y1="125" x2="160" y2="255" stroke="url(#goldGrad)" stroke-width="6" stroke-linecap="round" />
+    
+    <!-- Star Accent -->
+    <circle cx="160" cy="50" r="10" fill="#FFFBEB" />
+  </g>
+</svg>
